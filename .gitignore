@@ -4,9 +4,3 @@ __pycache__/
 venv/
 .venv/
 
-# ML models
-*.h5
-*.pt
-*.pth
-*.onnx
-
