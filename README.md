@@ -19,11 +19,6 @@ The system integrates **YOLO-based screen detection**, **CNN-based damage classi
 
 ---
 
-## 🧠 System Workflow
-
-
----
-
 ## 🧩 Technology Stack
 
 ### Backend
