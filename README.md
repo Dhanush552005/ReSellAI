@@ -29,7 +29,7 @@ The system integrates **YOLO-based screen detection**, **CNN-based damage classi
 ### Backend
 - Python
 - FastAPI
-- PyTorch
+- TensorFlow
 - Ultralytics YOLO
 - XGBoost
 
@@ -40,8 +40,8 @@ The system integrates **YOLO-based screen detection**, **CNN-based damage classi
 
 ### AI / ML Models
 - YOLO – Object Detection (screen detection)
-- CNN (MobileNetV2) – Damage classification
-- Machine Learning model – Resale score prediction
+- CNN (ResNet-50) – Damage classification
+- Machine Learning model – Feature Resale score prediction
 
 ---
 
@@ -53,32 +53,11 @@ The system integrates **YOLO-based screen detection**, **CNN-based damage classi
 - ↓
 - CNN – Damage Severity Classification
 - ↓
-- ML Model – Resale Scoring
+- ML Model – Feature Resale Scoring
 - ↓
 - Price Engine
 - ↓
 - Final Resale Price
-
----
-
-## 🧩 Technology Stack
-
-### Backend
-- Python
-- FastAPI
-- PyTorch
-- Ultralytics YOLO
-- XGBoost
-
-### Frontend
-- React (Vite)
-- Tailwind CSS
-- Framer Motion
-
-### AI / ML Models
-- YOLO – Object Detection (screen detection)
-- CNN (MobileNetV2) – Damage classification
-- Machine Learning model – Resale score prediction
 
 ---
 
