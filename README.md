@@ -94,7 +94,7 @@ business depreciation rules with AI model outputs for stable and realistic prici
 
 ### 🧮 Final Pricing Formula
 
-``
+
 Resale Price =
 MRP × BaseFactor × DamageWeight × ConfidenceFactor × MLFactor
 
