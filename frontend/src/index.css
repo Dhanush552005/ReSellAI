@@ -2,31 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-.input {
-  @apply w-full px-4 py-3 rounded-xl appearance-none;
-
-  @apply bg-white/5 text-indigo-100 
-         placeholder:text-indigo-300/70;
+@layer components {
   
-  @apply border border-indigo-400/20 
-         focus:outline-none focus:ring-2 focus:ring-indigo-500 
-         transition duration-300;
-  
-  @apply text-sm sm:text-base;
-}
-
-select.input option {
-    @apply bg-gray-800 text-white;
-}
-
-
-.file-input {
-  @apply block w-full text-sm text-gray-400;
-
-  &::file-selector-button {
-    @apply mr-4 py-2 px-4 rounded-xl
-           border-0 text-sm font-semibold
-           bg-indigo-600/90 text-white cursor-pointer
-           hover:bg-indigo-500 transition duration-300;
+  .input {
+    @apply w-full px-4 py-3 rounded-xl appearance-none;
+    @apply bg-white/5 text-indigo-100 placeholder:text-indigo-300/70;
+    @apply border border-indigo-400/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300;
+    @apply text-sm sm:text-base;
   }
+
+  select.input option {
+    @apply bg-gray-900 text-white;
+  }
+
+
+  .file-input {
+    @apply block w-full text-sm text-gray-400 cursor-pointer;
+  }
+
+  .file-input::file-selector-button {
+    @apply mr-4 py-2 px-4 rounded-xl border-0 text-sm font-semibold;
+    @apply bg-indigo-600/90 text-white cursor-pointer hover:bg-indigo-500 transition duration-300;
+  }
+
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-indigo-600/30 rounded-full border-2 border-transparent bg-clip-content hover:bg-indigo-500/50;
+  }
+}
+
+
+@keyframes pulse-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 20px) scale(1.1); }
+}
+
+@keyframes pulse-slow-reverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, -20px) scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 15s infinite alternate ease-in-out;
+}
+
+.animate-pulse-slow-reverse {
+  animation: pulse-slow-reverse 12s infinite alternate ease-in-out;
 }

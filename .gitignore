@@ -1,6 +1,37 @@
-# Python
+
+env.py
+backend/env.py
+.env
+.env.*
+
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
+
 venv/
 .venv/
+env/
+ENV/
 
+*.pt
+*.h5
+*.pkl
+models/
+
+Datasets/
+ipynb code/
+test_images/
+uploads/
+
+node_modules/
+dist/
+.vite/
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db

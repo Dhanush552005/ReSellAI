@@ -3,7 +3,7 @@ from ultralytics import YOLO
 
 class YOLOScreenDetector:
     def __init__(self, model_path, conf_threshold=0.73):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         model_path = os.path.join(base_dir, model_path)
 
         self.model = YOLO(model_path)
