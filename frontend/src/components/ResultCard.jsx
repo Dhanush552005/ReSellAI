@@ -58,7 +58,6 @@ export default function ResultCard({ prediction, setPrediction }) {
 
   if (!prediction) return null
 
-  // Rejection View
   if (status === "rejected") {
     return (
       <motion.div

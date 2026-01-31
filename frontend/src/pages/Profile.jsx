@@ -22,7 +22,6 @@ export default function Profile({ user, setUser }) {
       </div>
 
       <div className="space-y-4">
-        {/* Detail Cards */}
         <div className="grid grid-cols-1 gap-4">
           <div className="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
             <div className="flex items-center gap-4">
