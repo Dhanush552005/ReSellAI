@@ -13,6 +13,7 @@ class ResaleMLModel:
     def encode_brand(self, brand: str):
         brand = brand.lower().strip()
         return [
+            1 if brand == "apple" else 0,
             1 if brand == "oneplus" else 0,
             1 if brand == "redmi" else 0,
             1 if brand == "samsung" else 0,
