@@ -4,28 +4,24 @@ import { sellFromPrediction } from "../api"
 
 const DAMAGE_STYLES = {
   no_broken: {
-    text: "text-emerald-400",
-    border: "border-emerald-600/50",
-    glow: "shadow-[0_0_40px_rgba(52,211,153,0.7)]",
-    bg: "bg-emerald-500/10",
+    text: "text-green-700",
+    border: "border-green-100",
+    bg: "bg-green-50",
   },
   light_broken: {
-    text: "text-amber-400",
-    border: "border-amber-600/50",
-    glow: "shadow-[0_0_40px_rgba(251,191,36,0.7)]",
-    bg: "bg-amber-500/10",
+    text: "text-amber-700",
+    border: "border-amber-100",
+    bg: "bg-amber-50",
   },
   moderately_broken: {
-    text: "text-orange-400",
-    border: "border-orange-600/50",
-    glow: "shadow-[0_0_40px_rgba(251,146,60,0.7)]",
-    bg: "bg-orange-500/10",
+    text: "text-orange-700",
+    border: "border-orange-100",
+    bg: "bg-orange-50",
   },
   severe_broken: {
-    text: "text-red-400",
-    border: "border-red-600/50",
-    glow: "shadow-[0_0_40px_rgba(239,68,68,0.7)]",
-    bg: "bg-red-500/10",
+    text: "text-red-700",
+    border: "border-red-100",
+    bg: "bg-red-50",
   },
 }
 
@@ -63,13 +59,13 @@ export default function ResultCard({ prediction, setPrediction }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="mt-10 w-full max-w-md p-6 rounded-2xl bg-red-600/15 border border-red-500/50 text-red-300 text-center font-semibold backdrop-blur-lg shadow-xl shadow-red-900/50 mx-auto"
+        className="mt-6 w-full max-w-md p-6 rounded-2xl bg-red-50 border border-red-100 text-red-700 text-center font-semibold shadow-md mx-auto"
       >
-        <span className="text-xl block mb-2">🚫 Detection Rejected</span>
-        <p>{prediction.message}</p>
+        <span className="text-lg block mb-2">Detection Rejected</span>
+        <p className="text-sm font-normal">{prediction.message}</p>
         <button 
           onClick={() => setPrediction(null)}
-          className="mt-4 text-sm text-red-200 underline hover:text-white transition"
+          className="mt-4 text-xs text-red-700 underline hover:text-red-800 transition"
         >
           Try again with a clearer photo
         </button>
@@ -78,6 +74,11 @@ export default function ResultCard({ prediction, setPrediction }) {
   }
 
   const damageStyle = DAMAGE_STYLES[prediction.damage] || DAMAGE_STYLES.light_broken
+  const confidencePct = Math.max(
+    0,
+    Math.min(100, ((Number(prediction?.cnn_score) || 0) * 100))
+  )
+  const mlPct = Math.max(0, Math.min(100, ((Number(prediction?.ml_score) || 0) * 100)))
 
   const formattedPrice = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -109,41 +110,60 @@ export default function ResultCard({ prediction, setPrediction }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className={`mt-10 w-full max-w-lg p-6 sm:p-8 rounded-3xl ${damageStyle.bg} backdrop-blur-md border ${damageStyle.border} ${damageStyle.glow} space-y-6 mx-auto transition-all duration-500`}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="mt-6 w-full max-w-lg p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-md space-y-6 mx-auto"
     >
-      <h3 className="text-xl font-bold text-white text-center">AI Resale Estimate</h3>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            Step 3
+          </p>
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
+            AI resale estimate
+          </h3>
+        </div>
+        <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${damageStyle.bg} ${damageStyle.border} ${damageStyle.text}`}>
+          <span className="font-semibold">
+            {prediction.damage?.replace(/_/g, " ").toUpperCase()}
+          </span>
+        </div>
+      </div>
       
-      <div className="text-center py-6 rounded-2xl bg-black/20 border border-white/10">
-        <p className="text-indigo-300 text-sm font-medium mb-1 uppercase tracking-wider">Predicted Value</p>
-        <p className={`text-5xl sm:text-6xl font-extrabold ${damageStyle.text}`}>{formattedPrice}</p>
+      <div className="text-center py-6 rounded-2xl bg-slate-50 border border-slate-200">
+        <p className="text-xs sm:text-sm font-medium mb-1 uppercase tracking-wide text-slate-500">
+          Predicted resale price
+        </p>
+        <p className="text-4xl sm:text-5xl font-bold text-green-600 tracking-tight">
+          {formattedPrice}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-        <div className={`rounded-xl bg-black/20 p-3 border ${damageStyle.border}`}>
-          <p className="text-indigo-300/70 text-xs uppercase tracking-widest">Condition</p>
-          <p className={`text-base font-extrabold mt-1 ${damageStyle.text}`}>
-            {prediction.damage?.replace(/_/g, " ").toUpperCase()}
+      <div className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-semibold text-slate-900">Confidence</p>
+          <p className="text-sm font-semibold text-slate-900">
+            {confidencePct.toFixed(1)}%
           </p>
         </div>
-
-        <ScoreCard 
-          title="ML Score" 
-          value={`${((Number(prediction?.ml_score) || 0) * 100).toFixed(1)}%`} 
-          color="text-indigo-400" 
-        />
-        <ScoreCard 
-          title="CNN Score" 
-          value={`${((Number(prediction?.cnn_score) || 0) * 100).toFixed(1)}%`} 
-          color="text-fuchsia-400" 
-        />
+        <div className="mt-2 h-2.5 w-full rounded-full bg-slate-200 overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${confidencePct}%` }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="h-full rounded-full bg-green-600"
+          />
+        </div>
+        <p className="mt-2 text-xs text-slate-500">
+          ML score: <span className="font-medium text-slate-700">{mlPct.toFixed(1)}%</span>
+        </p>
       </div>
 
       {sold ? (
-        <div className="text-center py-4 bg-emerald-500/20 border border-emerald-500/50 rounded-xl">
-           <p className="text-emerald-400 font-bold">Successfully Listed for Sale!</p>
-           <p className="text-xs text-emerald-300/70 mt-1">Check the Marketplace to see your listing</p>
+        <div className="text-center py-4 bg-green-50 border border-green-100 rounded-xl">
+           <p className="text-green-700 font-semibold">Successfully listed for sale</p>
+           <p className="text-xs text-green-600 mt-1">Check the Marketplace to see your listing.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -152,18 +172,18 @@ export default function ResultCard({ prediction, setPrediction }) {
             whileTap={{ scale: 0.97 }}
             onClick={handleSell}
             disabled={selling}
-            className="py-3 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-500 transition disabled:opacity-70 shadow-lg shadow-emerald-900/40"
+            className="py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition disabled:opacity-70 shadow-md"
           >
-            {selling ? "Listing..." : "Sell Device"}
+            {selling ? "Listing..." : "List in Marketplace"}
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setPrediction(null)}
-            className="py-3 rounded-xl bg-white/10 text-white font-bold hover:bg-white/20 transition border border-white/10"
+            className="py-3 rounded-xl bg-white text-slate-700 font-semibold hover:bg-slate-50 transition border border-slate-200"
           >
-            Scan New
+            Scan another device
           </motion.button>
         </div>
       )}
@@ -173,9 +193,9 @@ export default function ResultCard({ prediction, setPrediction }) {
 
 function ScoreCard({ title, value, color }) {
   return (
-    <div className="rounded-xl bg-black/20 p-3 border border-white/10">
-      <p className="text-indigo-300/70 text-xs uppercase tracking-widest">{title}</p>
-      <p className={`text-base font-extrabold mt-1 ${color}`}>{value}</p>
+    <div className="rounded-xl bg-slate-50 p-3 border border-slate-200">
+      <p className="text-[11px] text-slate-500 uppercase tracking-widest">{title}</p>
+      <p className={`text-sm font-semibold mt-1 ${color}`}>{value}</p>
     </div>
   )
 }

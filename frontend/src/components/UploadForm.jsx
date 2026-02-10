@@ -14,18 +14,18 @@ const STORAGE_OPTIONS = [64, 128, 256, 512, 1024, 2048]
 const AGE_OPTIONS = [0, 1, 2, 3, 4, 5]
 
 const inputBaseClasses = `
-  w-full px-4 py-3 rounded-xl border border-indigo-400/20 bg-white/5
-  text-white placeholder-indigo-300/70 focus:outline-none
-  focus:ring-2 focus:ring-indigo-500 transition duration-300
+  w-full px-4 py-3 rounded-xl border border-slate-200 bg-white
+  text-slate-900 placeholder-slate-400 focus:outline-none
+  focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200
   text-sm sm:text-base appearance-none
 `
 
 const fileInputClasses = `
-  block w-full text-sm text-gray-500
+  block w-full text-sm text-slate-600
   file:mr-4 file:py-2 file:px-4 file:rounded-xl
-  file:border-0 file:text-sm file:font-semibold
-  file:bg-indigo-600/90 file:text-white file:cursor-pointer
-  hover:file:bg-indigo-500 transition duration-300 cursor-pointer
+  file:border-0 file:text-sm file:font-medium
+  file:bg-green-600 file:text-white file:cursor-pointer
+  hover:file:bg-green-700 transition duration-200 cursor-pointer
 `
 
 export default function UploadForm({ setPrediction, setLoading, loading, fetchUser }) {
@@ -61,16 +61,30 @@ export default function UploadForm({ setPrediction, setLoading, loading, fetchUs
       onSubmit={handleSubmit}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="w-full p-6 sm:p-8 rounded-3xl bg-white/5 backdrop-blur-md border border-indigo-500/30 shadow-2xl shadow-indigo-900/40 space-y-6 max-w-lg mx-auto"
+      transition={{ duration: 0.4 }}
+      className="w-full p-5 sm:p-6 lg:p-7 rounded-2xl bg-white border border-slate-200 shadow-md space-y-6"
     >
-      <h2 className="text-3xl font-extrabold text-white text-center mb-6">
-        Mobile Device Scanner
+      <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">
+        Tell us about your device
       </h2>
 
-      <div className="space-y-4">
+      {/* Step 1: Image upload */}
+      <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5 space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+              Step 1
+            </p>
+            <p className="text-sm sm:text-base font-semibold text-slate-900">
+              Upload phone image
+            </p>
+          </div>
+        </div>
+
         <label className="block">
-          <span className="text-indigo-300 text-sm font-medium mb-2 block">Upload Phone Image</span>
+          <span className="text-xs sm:text-sm font-medium text-slate-700 mb-2 block">
+            Phone photo
+          </span>
           <input
             type="file"
             name="file"
@@ -82,72 +96,106 @@ export default function UploadForm({ setPrediction, setLoading, loading, fetchUs
         </label>
 
         {preview && (
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex justify-center">
-            <img src={preview} alt="Preview" className="w-36 h-36 sm:w-40 sm:h-40 rounded-xl object-cover border-4 border-indigo-600 shadow-xl shadow-indigo-900/60" />
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="flex justify-center"
+          >
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-32 h-32 sm:w-36 sm:h-36 rounded-xl object-cover border border-slate-200 shadow-md"
+            />
           </motion.div>
         )}
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input name="mrp" placeholder="MRP (₹)" type="number" />
+      {/* Step 2: Device details */}
+      <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5 space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+              Step 2
+            </p>
+            <p className="text-sm sm:text-base font-semibold text-slate-900">
+              Add device details
+            </p>
+          </div>
+        </div>
 
-        <select
-          name="brand"
-          required
-          value={brand}
-          onChange={(e) => { setBrand(e.target.value); setRam(""); }}
-          className={inputBaseClasses + " text-indigo-200"}
-        >
-          <option value="" className="bg-gray-800">Select Brand</option>
-          {Object.keys(RAM_OPTIONS).map(b => (
-            <option key={b} value={b} className="bg-gray-800">{b.charAt(0).toUpperCase() + b.slice(1)}</option>
-          ))}
-        </select>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input name="mrp" placeholder="MRP (₹)" type="number" />
 
-        <select
-          name="ram"
-          required
-          value={ram}
-          disabled={!brand}
-          onChange={(e) => setRam(e.target.value)}
-          className={`${inputBaseClasses} text-indigo-200 ${!brand && "opacity-60"}`}
-        >
-          <option value="">{brand ? "Select RAM" : "Select Brand First"}</option>
-          {brand && RAM_OPTIONS[brand].map((r) => (
-            <option key={r} value={r} className="bg-gray-800">{r} GB</option>
-          ))}
-        </select>
+          <select
+            name="brand"
+            required
+            value={brand}
+            onChange={(e) => {
+              setBrand(e.target.value)
+              setRam("")
+            }}
+            className={inputBaseClasses}
+          >
+            <option value="">Select Brand</option>
+            {Object.keys(RAM_OPTIONS).map((b) => (
+              <option key={b} value={b}>
+                {b.charAt(0).toUpperCase() + b.slice(1)}
+              </option>
+            ))}
+          </select>
 
-        <select name="storage" required className={inputBaseClasses + " text-indigo-200"}>
-          <option value="">Storage</option>
-          {STORAGE_OPTIONS.map((s) => (
-            <option key={s} value={s} className="bg-gray-800">{s} GB</option>
-          ))}
-        </select>
+          <select
+            name="ram"
+            required
+            value={ram}
+            disabled={!brand}
+            onChange={(e) => setRam(e.target.value)}
+            className={`${inputBaseClasses} ${!brand && "opacity-60"}`}
+          >
+            <option value="">{brand ? "Select RAM" : "Select Brand First"}</option>
+            {brand &&
+              RAM_OPTIONS[brand].map((r) => (
+                <option key={r} value={r}>
+                  {r} GB
+                </option>
+              ))}
+          </select>
 
-        <select name="age" required className={inputBaseClasses + " text-indigo-200"}>
-          <option value="">Age</option>
-          {AGE_OPTIONS.map((a) => (
-            <option key={a} value={a} className="bg-gray-800">{a} Year</option>
-          ))}
-        </select>
+          <select name="storage" required className={inputBaseClasses}>
+            <option value="">Storage</option>
+            {STORAGE_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s} GB
+              </option>
+            ))}
+          </select>
 
-        <select name="body_broken" required className={inputBaseClasses + " sm:col-span-2 text-indigo-200"}>
-          <option value="false" className="bg-gray-800">Body OK</option>
-          <option value="true" className="bg-gray-800">Body Broken</option>
-        </select>
-      </div>
+          <select name="age" required className={inputBaseClasses}>
+            <option value="">Age</option>
+            {AGE_OPTIONS.map((a) => (
+              <option key={a} value={a}>
+                {a} Year
+              </option>
+            ))}
+          </select>
+
+          <select name="body_broken" required className={`${inputBaseClasses} sm:col-span-2`}>
+            <option value="false">Body OK</option>
+            <option value="true">Body Broken</option>
+          </select>
+        </div>
+      </section>
 
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         disabled={loading}
-        className="w-full py-3 rounded-xl text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-lg shadow-indigo-900/50 disabled:opacity-70"
+        className="w-full py-3 rounded-xl text-sm sm:text-base font-semibold bg-green-600 text-white shadow-md hover:bg-green-700 disabled:opacity-70"
       >
-        {loading ? "AI is Scanning..." : "Check Resale Price"}
+        {loading ? "AI is scanning your phone..." : "Get AI resale estimate"}
       </motion.button>
 
-      {error && <p className="text-red-400 text-sm text-center font-medium">{error}</p>}
+      {error && <p className="text-red-500 text-sm text-center font-medium">{error}</p>}
     </motion.form>
   )
 }

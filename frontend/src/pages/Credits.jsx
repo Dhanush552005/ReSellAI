@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createCreditOrder, verifyCreditPayment } from "../api"
 import { motion } from "framer-motion"
-import { Zap, ShieldCheck, CreditCard } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 
 
 const PLANS = [
@@ -57,7 +57,7 @@ export default function Credits({ fetchUser }) {
           name: "Test User",
           email: "test@example.com"
         },
-        theme: { color: "#6366f1" },
+        theme: { color: "#16a34a" },
         modal: {
           ondismiss: () => setLoading(null) 
         }
@@ -75,43 +75,65 @@ export default function Credits({ fetchUser }) {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-white mb-4">
-          Top Up Your <span className="text-indigo-400">Credits</span>
+      <div className="text-center mb-10">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 mb-2">
+          Top up your credits
         </h1>
-        <p className="text-gray-400">Choose a plan to continue using the AI Device Scanner</p>
+        <p className="text-sm text-slate-500">
+          Simple, transparent pricing to keep using AI-powered valuations.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {PLANS.map((plan) => (
           <motion.div
             key={plan.id}
-            whileHover={{ y: -10 }}
-            className={`relative p-8 rounded-3xl bg-white/5 border ${
-              plan.popular ? 'border-indigo-500 shadow-2xl shadow-indigo-500/20' : 'border-white/10'
-            } backdrop-blur-xl`}
+            whileHover={{ y: -4, scale: 1.01 }}
+            className={`relative p-6 sm:p-7 rounded-2xl bg-white border shadow-md ${
+              plan.popular ? "border-2 border-green-600" : "border-slate-200"
+            }`}
           >
             {plan.popular && (
-              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-600 text-white text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-[0.18em]">
                 Most Popular
               </span>
             )}
-            <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-            <div className={`text-5xl font-black bg-gradient-to-r ${plan.color} bg-clip-text text-transparent mb-6`}>
-              ₹{plan.price}
+            <h3 className="text-base font-semibold text-slate-900 mb-1">
+              {plan.name}
+            </h3>
+            <div className="flex items-baseline gap-1 mb-5">
+              <span className="text-3xl sm:text-4xl font-semibold text-slate-900">
+                ₹{plan.price}
+              </span>
+              <span className="text-xs text-slate-500">/ one-time</span>
             </div>
-            
-            <ul className="space-y-4 mb-8 text-gray-300">
-              <li className="flex items-center gap-3"><Zap size={18} className="text-indigo-400"/> {plan.credits} AI Scan Credits</li>
-              <li className="flex items-center gap-3"><ShieldCheck size={18} className="text-indigo-400"/> Instant Verification</li>
-              <li className="flex items-center gap-3"><CreditCard size={18} className="text-indigo-400"/> Secure Payment</li>
+
+            <p className="text-xs sm:text-sm text-slate-500 mb-4">
+              {plan.credits} AI scan credits to evaluate your devices.
+            </p>
+
+            <ul className="space-y-2 mb-6 text-sm text-slate-600">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-green-600" />
+                <span>{plan.credits} AI scan credits</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-green-600" />
+                <span>Instant AI valuation access</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 size={16} className="text-green-600" />
+                <span>Secure Razorpay payments</span>
+              </li>
             </ul>
 
             <button
               onClick={() => handleBuy(plan)}
               disabled={loading !== null}
-              className={`w-full py-4 rounded-xl font-bold transition-all active:scale-95 ${
-                loading === plan.id ? 'bg-gray-700' : `bg-gradient-to-r ${plan.color} text-white shadow-lg`
+              className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${
+                loading === plan.id
+                  ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 text-white shadow-md"
               }`}
             >
               {loading === plan.id ? "Opening Checkout..." : "Buy Credits"}

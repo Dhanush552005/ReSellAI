@@ -1,8 +1,11 @@
-import { useNavigate, Link } from "react-router-dom"
-import { Coins, LogOut, Store, ScanSearch, User } from "lucide-react"
+import { useNavigate, Link, useLocation } from "react-router-dom"
+import { Coins, LogOut, Store, ScanSearch, User, Home } from "lucide-react"
 
 export default function Navbar({ user, setUser }) {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const isActive = (path) => location.pathname === path
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -11,69 +14,103 @@ export default function Navbar({ user, setUser }) {
   }
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 shadow-2xl">
-        
-        
-       <Link to="/predict" className="flex items-center gap-3">
-        
-        <div className="w-10 h-10 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-          <span className="font-black text-white text-sm">AI</span>
-        </div>
-
-        <div className="flex flex-col leading-tight">
-          <span className="font-bold text-xl tracking-tight text-white">
-            <span className="text-indigo-400">ReSellAI</span>
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.15em] text-gray-400 font-medium hidden sm:block">
-            Intelligent Mobile Resale Platform
-          </span>
-        </div>
-      </Link>
-
-        
-        <div className="flex items-center gap-4 sm:gap-8">
-          <Link to="/predict" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-            <ScanSearch size={20} />
-            <span className="text-sm font-medium hidden md:block">Predictor</span>
-          </Link>
-          
-          <Link to="/marketplace" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-            <Store size={20} />
-            <span className="text-sm font-medium hidden md:block">Marketplace</span>
-          </Link>
-        </div>
-
-        
-        <div className="flex items-center gap-4">
-          
-          <Link 
-            to="/credits" 
-            className="flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1.5 rounded-full hover:bg-indigo-500/20 transition-all cursor-pointer"
-          >
-            <Coins size={16} className="text-indigo-400" />
-            <span className="text-sm font-bold text-indigo-100">{user.credits}</span>
+    <nav className="sticky top-0 z-40 bg-white border-b border-gray-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-6">
+          {/* Left: Logo */}
+          <Link to="/" className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-600 text-white text-base font-semibold shadow-md">
+              AI
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-semibold text-xl tracking-tight text-slate-900">
+                ReSellAI
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.16em] text-slate-400 font-medium hidden sm:block">
+                Intelligent Mobile Resale Platform
+              </span>
+            </div>
           </Link>
 
-          <div className="h-6 w-px bg-white/10 hidden sm:block"></div>
+          {/* Center: Primary navigation */}
+          <div className="flex-1 hidden md:flex items-center justify-center">
+            <div className="flex items-center gap-10">
+              <Link
+                to="/"
+                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  isActive("/")
+                    ? "text-green-700 bg-green-50"
+                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
+                }`}
+              >
+                <Home size={18} className="hidden sm:block" />
+                <span>Home</span>
+                {isActive("/") && (
+                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
+                )}
+              </Link>
 
-          
-          <div className="flex items-center gap-3">
-            <Link 
-              to="/profile" 
-              className="text-sm font-medium text-gray-300 hover:text-indigo-400 transition-colors cursor-pointer flex items-center gap-2"
+              <Link
+                to="/predict"
+                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  isActive("/predict")
+                    ? "text-green-700 bg-green-50"
+                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
+                }`}
+              >
+                <ScanSearch size={18} className="hidden sm:block" />
+                <span>Sell</span>
+                {isActive("/predict") && (
+                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
+                )}
+              </Link>
+
+              <Link
+                to="/marketplace"
+                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  isActive("/marketplace")
+                    ? "text-green-700 bg-green-50"
+                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
+                }`}
+              >
+                <Store size={18} className="hidden sm:block" />
+                <span>Marketplace</span>
+                {isActive("/marketplace") && (
+                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
+                )}
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: Credits + Profile */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              to="/credits"
+              className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-100 px-3.5 py-1.5 text-sm font-medium text-green-700 hover:bg-green-200/70 transition-colors cursor-pointer"
             >
-              <User size={18} />
-              <span className="hidden sm:block capitalize">{user.username}</span>
+              <Coins size={16} className="text-green-500" />
+              <span>{user.credits}</span>
             </Link>
-            
-            <button 
-              onClick={handleLogout}
-              className="p-2 hover:bg-red-500/10 rounded-lg text-gray-400 hover:text-red-400 transition-all hidden md:block"
-              title="Logout"
-            >
-              <LogOut size={20} />
-            </button>
+
+            <div className="hidden sm:block h-6 w-px bg-slate-200" />
+
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-green-700 transition-colors cursor-pointer"
+              >
+                <User size={18} />
+                <span className="hidden sm:block capitalize">{user.username}</span>
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="hidden md:inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                title="Logout"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </div>

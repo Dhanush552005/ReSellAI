@@ -74,6 +74,17 @@ def create_phone_order(phone_id: str, user=Depends(get_current_user)):
         "key": RAZORPAY_KEY_ID
     }
 
+@router.get("/my-listings")
+def get_my_listings(user=Depends(get_current_user)):
+    phones = phones_col.find({"seller_id": user["_id"]})
+
+    result = []
+    for phone in phones:
+        phone["_id"] = str(phone["_id"])
+        phone["seller_id"] = str(phone["seller_id"])
+        result.append(phone)
+
+    return result
 
 @router.post("/buy/verify-payment")
 def verify_phone_payment(

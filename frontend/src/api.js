@@ -106,6 +106,13 @@ export async function verifyPhonePayment(formData) {
   return safeJson(res)
 }
 
+export async function getMyListings() {
+  const res = await fetch(`${BASE_URL}/marketplace/my-listings`, {
+    headers: { ...authHeaders() },
+  })
+  return safeJson(res)
+}
+
 export async function createCreditOrder(formData) {
   const res = await fetch(`${BASE_URL}/payments/create-credit-order`, {
     method: "POST",

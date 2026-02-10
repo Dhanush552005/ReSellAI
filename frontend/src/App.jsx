@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 import { getMe } from "./api"
+import Home from "./pages/Home"
 import Predict from "./pages/Predict"
 import Login from "./pages/Login"
 import Credits from "./pages/Credits"
@@ -35,39 +36,18 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-        
+      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
         {user && <Navbar user={user} setUser={setUser} />}
 
-        <div className="flex justify-center px-4 pt-24 pb-24">
-          <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-indigo-500/20 blur-[150px] animate-pulse-slow" />
-          <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-purple-500/20 blur-[150px] animate-pulse-slow-reverse" />
-
-          <style>{`
-            @keyframes pulse-slow {
-              0%, 100% { transform: translate(0, 0); }
-              50% { transform: translate(20px, 20px); }
-            }
-            @keyframes pulse-slow-reverse {
-              0%, 100% { transform: translate(0, 0); }
-              50% { transform: translate(-20px, -20px); }
-            }
-            .animate-pulse-slow {
-              animation: pulse-slow 20s infinite alternate ease-in-out;
-            }
-            .animate-pulse-slow-reverse {
-              animation: pulse-slow-reverse 20s infinite alternate ease-in-out;
-            }
-          `}</style>
-
+        <main className="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 pb-16">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative z-10 w-full max-w-lg lg:max-w-2xl rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl shadow-indigo-900/60 p-6 sm:p-10"
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="w-full rounded-2xl bg-white border border-slate-200 shadow-md p-4 sm:p-6 lg:p-8"
           >
             <Routes>
-              <Route path="/" element={<Navigate to="/predict" />} />
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login fetchUser={fetchUser} />} />
               <Route path="/register" element={<Register />} />
 
@@ -80,6 +60,7 @@ export default function App() {
                 path="/credits"
                 element={user ? <Credits fetchUser={fetchUser} /> : <Navigate to="/login" />}
               />
+
               <Route
                 path="/profile"
                 element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/login" />}
@@ -91,10 +72,17 @@ export default function App() {
               />
             </Routes>
           </motion.div>
-        </div>
+        </main>
 
-        <footer className="absolute bottom-3 sm:bottom-6 w-full text-xs text-indigo-300/40 tracking-wide text-center px-4">
-          Built with YOLO · CNN · XGBoost · FastAPI · React & Tailwind CSS
+        <footer className="bg-white border-t">
+          <div className="max-w-6xl mx-auto px-6 py-8 text-sm text-gray-500 flex justify-between">
+            <p>© {new Date().getFullYear()} ReSellAI. All rights reserved.</p>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-gray-800">Privacy</a>
+              <a href="#" className="hover:text-gray-800">Terms</a>
+              <a href="#" className="hover:text-gray-800">Support</a>
+            </div>
+          </div>
         </footer>
       </div>
     </BrowserRouter>
