@@ -17,7 +17,6 @@ export default function Navbar({ user, setUser }) {
     <nav className="sticky top-0 z-40 bg-white border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-6">
-          {/* Left: Logo */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-600 text-white text-base font-semibold shadow-md">
               AI
@@ -32,7 +31,6 @@ export default function Navbar({ user, setUser }) {
             </div>
           </Link>
 
-          {/* Center: Primary navigation */}
           <div className="flex-1 hidden md:flex items-center justify-center">
             <div className="flex items-center gap-10">
               <Link
@@ -82,7 +80,6 @@ export default function Navbar({ user, setUser }) {
             </div>
           </div>
 
-          {/* Right: Credits + Profile */}
           <div className="flex items-center gap-3 sm:gap-4">
             <Link
               to="/credits"

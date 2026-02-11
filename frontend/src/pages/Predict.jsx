@@ -19,7 +19,6 @@ export default function Predict({ user, fetchUser }) {
         </p>
       </div>
 
-      {/* Step indicator */}
       <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3 sm:gap-6">

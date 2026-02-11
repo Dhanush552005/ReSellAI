@@ -68,7 +68,6 @@ export default function UploadForm({ setPrediction, setLoading, loading, fetchUs
         Tell us about your device
       </h2>
 
-      {/* Step 1: Image upload */}
       <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -110,7 +109,6 @@ export default function UploadForm({ setPrediction, setLoading, loading, fetchUs
         )}
       </section>
 
-      {/* Step 2: Device details */}
       <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 sm:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>

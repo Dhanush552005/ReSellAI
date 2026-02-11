@@ -6,7 +6,6 @@ import {
 } from "lucide-react"
 
 export default function Home() {
-  // Brand logos as SVG components
   const BrandLogo = ({ name, svg }) => (
     <motion.div
       whileHover={{ scale: 1.08 }}
@@ -53,7 +52,6 @@ export default function Home() {
     }
   ]
 
-  // Feature cards data
   const features = [
     {
       icon: Zap,
@@ -77,7 +75,6 @@ export default function Home() {
     }
   ]
 
-  // Stats data
   const stats = [
     { number: "5+", label: "Brands Supported" },
     { number: "100+", label: "Devices Scanned" },
@@ -85,7 +82,6 @@ export default function Home() {
     { number: "98%", label: "AI Accuracy Rate" }
   ]
 
-  // Testimonials data
   const testimonials = [
     {
       quote: "ReSellAI gave me the best price for my iPhone 12. The AI analysis was spot-on and the entire process was seamless!",
@@ -126,7 +122,6 @@ export default function Home() {
 
   return (
     <div className="space-y-0">
-      {/* Hero Section */}
       <section className="flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-16 py-16 lg:py-20">
         <div className="w-full lg:w-1/2 space-y-6">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
@@ -206,7 +201,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
       <section className="space-y-4 py-16 lg:py-20">
         <div>
           <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
@@ -274,7 +268,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Supported Brands Section */}
       <section className="space-y-8 py-16 lg:py-20">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
@@ -308,7 +301,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Choose ReSellAI Section */}
       <section className="space-y-8 py-16 lg:py-20">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
@@ -349,7 +341,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Live Platform Stats Section */}
       <section className="rounded-2xl bg-slate-100 p-8 sm:p-12 lg:p-16 py-16 lg:py-20">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
@@ -381,7 +372,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="space-y-8 py-16 lg:py-20">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
@@ -428,7 +418,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Final CTA Section */}
       <section className="rounded-2xl bg-green-50 p-8 sm:p-12 lg:p-16 py-16 lg:py-20 border border-green-200">
         <div className="text-center space-y-8">
           <div className="space-y-4">
@@ -459,7 +448,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Section */}
       <section className="space-y-4 py-16 lg:py-20">
         <div>
           <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
