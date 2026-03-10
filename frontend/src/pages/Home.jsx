@@ -4,52 +4,79 @@ import {
   Smartphone, UploadCloud, Sparkles, ShieldCheck, IndianRupee,
   Zap, Lock, Award, MessageCircle, Star, ArrowRight
 } from "lucide-react"
+import appleLogo from "../assets/apple.svg"
+import samsungLogo from "../assets/samsung.svg"
+import oneplusLogo from "../assets/oneplus.svg"
+import xiaomiLogo from "../assets/xiaomi.svg"
 
 export default function Home() {
-  const BrandLogo = ({ name, svg }) => (
+  const FloatingCard = () => (
     <motion.div
-      whileHover={{ scale: 1.08 }}
+      animate={{ y: [0, -20, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      className="relative"
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-600 rounded-3xl blur-2xl opacity-20"></div>
+      <div className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl p-6 sm:p-8 max-w-sm">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Device Valuation</p>
+              <p className="text-lg font-bold text-gray-900">iPhone 12 128GB</p>
+            </div>
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white">
+              <Smartphone size={20} />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Condition</span>
+              <span className="text-sm font-semibold text-gray-900">Moderate Damage</span>
+            </div>
+            <div className="h-px bg-gradient-to-r from-gray-200 via-gray-100 to-transparent"></div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Market Value</span>
+              <span className="text-lg font-bold text-gray-900">₹32,500</span>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-200/50">
+            <p className="text-xs text-green-700 font-semibold mb-2">ReSellAI Offer</p>
+            <p className="text-2xl font-bold text-green-600">₹33,800</p>
+            <p className="text-xs text-green-600 mt-1">+4% above market</p>
+          </div>
+
+          <button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+            Accept Offer
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  )
+
+  const BrandLogo = ({ name, logo }) => (
+    <motion.div
+      whileHover={{ scale: 1.12 }}
       className="group cursor-pointer flex flex-col items-center gap-3"
     >
-      <div className="flex items-center justify-center h-24 w-24 rounded-xl bg-white shadow-md group-hover:shadow-lg transition-all">
-        <div className="opacity-60 group-hover:opacity-100 transition-opacity" dangerouslySetInnerHTML={{ __html: svg }} />
+      <div className="flex items-center justify-center h-20 w-20 rounded-2xl bg-white/60 backdrop-blur-md border border-white/40 shadow-lg group-hover:shadow-xl group-hover:bg-white/80 transition-all duration-300">
+        <img 
+          src={logo} 
+          alt={name} 
+          className="h-10 w-10 object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+        />
       </div>
-      <p className="text-xs font-medium text-slate-600">{name}</p>
+      <p className="text-xs font-medium text-gray-600 text-center group-hover:text-gray-900 transition-colors">{name}</p>
     </motion.div>
   )
 
   const brands = [
-    {
-      name: "Apple",
-      svg: `<svg class="w-12 h-12 group-hover:text-green-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.02-1.77-.64-3.3-.64-1.54 0-2 .64-3.3.64-1.34-.02-2.23-1.23-3.05-2.47C5.72 17.75 5 15.93 5 14.09c0-2.5 1.63-3.85 3.3-3.85 1.03 0 1.88.5 2.53.5.83 0 1.73-.5 3-1-.48-1.45-1.63-2.75-3-2.75-2.43 0-4.24 1.92-4.24 4.83 0 2.47 1.76 4.38 4.38 4.62.67 1.12 2 1.96 3.42 1.96 1.47 0 2.76-.89 3.27-2.05zM12 7.5c1.38 0 2.5-1.12 2.5-2.5S13.38 2.5 12 2.5s-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5z"/>
-      </svg>`
-    },
-    {
-      name: "Samsung",
-      svg: `<svg class="w-12 h-12 group-hover:text-green-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M22 6h-8.5L8.5 2H2v20h20V6zm-4 10H6V8h12v8z"/>
-      </svg>`
-    },
-    {
-      name: "OnePlus",
-      svg: `<svg class="w-12 h-12 group-hover:text-green-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 6v12M6 12h12" stroke="white" stroke-width="2" fill="none"/>
-      </svg>`
-    },
-    {
-      name: "Xiaomi",
-      svg: `<svg class="w-12 h-12 group-hover:text-green-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M6 6h3v12H6V6zm5 0h3v12h-3V6zm5 0h3v12h-3V6z"/>
-      </svg>`
-    },
-    {
-      name: "Redmi",
-      svg: `<svg class="w-12 h-12 group-hover:text-green-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-      </svg>`
-    }
+    { name: "Apple", logo: appleLogo },
+    { name: "Xiaomi", logo: xiaomiLogo },
+    { name: "Samsung", logo: samsungLogo },
+    { name: "OnePlus", logo: oneplusLogo },
+    { name: "Redmi", logo: xiaomiLogo }
   ]
 
   const features = [
@@ -284,11 +311,11 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 w-full max-w-4xl"
+            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 w-full max-w-6xl"
           >
             {brands.map((brand, idx) => (
-              <motion.div key={idx} variants={itemVariants}>
-                <BrandLogo name={brand.name} svg={brand.svg} />
+              <motion.div key={idx} variants={itemVariants} className="flex justify-center">
+                <BrandLogo name={brand.name} logo={brand.logo} />
               </motion.div>
             ))}
           </motion.div>
