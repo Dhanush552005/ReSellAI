@@ -5,10 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from ..db.mongo import users_col
-
-SECRET_KEY = "resellai_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+from ..env import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES  # ✅ FIX
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()

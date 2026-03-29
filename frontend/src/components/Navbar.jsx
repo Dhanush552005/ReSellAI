@@ -1,116 +1,117 @@
-import { useNavigate, Link, useLocation } from "react-router-dom"
-import { Coins, LogOut, Store, ScanSearch, User, Home } from "lucide-react"
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { Coins, LogOut, Store, ScanSearch, User, Home, Menu } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar({ user, setUser }) {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isActive = (path) => location.pathname === path
+  const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    setUser(null)
-    navigate("/login")
-  }
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  };
 
   return (
-    <nav className="sticky top-0 z-40 bg-white border-b border-gray-200">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-6">
-          <Link to="/" className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-600 text-white text-base font-semibold shadow-md">
+    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-200 shadow-lg">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white text-lg font-bold shadow-md">
               AI
             </div>
-            <div className="flex flex-col leading-tight">
-              <span className="font-semibold text-xl tracking-tight text-slate-900">
-                ReSellAI
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.16em] text-slate-400 font-medium hidden sm:block">
-                Intelligent Mobile Resale Platform
-              </span>
-            </div>
+            <span className="font-bold text-2xl tracking-tight text-slate-900">
+              ReSellAI
+            </span>
           </Link>
 
-          <div className="flex-1 hidden md:flex items-center justify-center">
-            <div className="flex items-center gap-10">
-              <Link
-                to="/"
-                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  isActive("/")
-                    ? "text-green-700 bg-green-50"
-                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
-                }`}
-              >
-                <Home size={18} className="hidden sm:block" />
-                <span>Home</span>
-                {isActive("/") && (
-                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
-                )}
-              </Link>
-
-              <Link
-                to="/predict"
-                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  isActive("/predict")
-                    ? "text-green-700 bg-green-50"
-                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
-                }`}
-              >
-                <ScanSearch size={18} className="hidden sm:block" />
-                <span>Sell</span>
-                {isActive("/predict") && (
-                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
-                )}
-              </Link>
-
-              <Link
-                to="/marketplace"
-                className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  isActive("/marketplace")
-                    ? "text-green-700 bg-green-50"
-                    : "text-slate-600 hover:text-green-700 hover:bg-slate-50"
-                }`}
-              >
-                <Store size={18} className="hidden sm:block" />
-                <span>Marketplace</span>
-                {isActive("/marketplace") && (
-                  <span className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-green-600" />
-                )}
-              </Link>
-            </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-10">
+            <NavLink to="/" label="Home" icon={<Home size={20} />} isActive={isActive("/")} />
+            <NavLink to="/predict" label="Sell" icon={<ScanSearch size={20} />} isActive={isActive("/predict")} />
+            <NavLink to="/marketplace" label="Marketplace" icon={<Store size={20} />} isActive={isActive("/marketplace")} />
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          {/* Right Section */}
+          <div className="flex items-center gap-6">
             <Link
               to="/credits"
-              className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-100 px-3.5 py-1.5 text-sm font-medium text-green-700 hover:bg-green-200/70 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-full border border-green-300 bg-green-100 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-200 hover:scale-105 transition-all"
             >
-              <Coins size={16} className="text-green-500" />
+              <Coins size={18} className="text-green-500" />
               <span>{user.credits}</span>
             </Link>
 
-            <div className="hidden sm:block h-6 w-px bg-slate-200" />
+            <Link
+              to="/profile"
+              className="hidden md:flex items-center gap-3 text-sm font-medium text-slate-600 hover:text-green-700 hover:scale-105 transition-all"
+            >
+              <User size={20} />
+              <span className="capitalize">{user.username}</span>
+            </Link>
 
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Link
-                to="/profile"
-                className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-green-700 transition-colors cursor-pointer"
-              >
-                <User size={18} />
-                <span className="hidden sm:block capitalize">{user.username}</span>
-              </Link>
+            <button
+              onClick={handleLogout}
+              className="hidden md:flex items-center justify-center rounded-md p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 hover:scale-105 transition-all"
+              title="Logout"
+            >
+              <LogOut size={20} />
+            </button>
 
-              <button
-                onClick={handleLogout}
-                className="hidden md:inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                title="Logout"
-              >
-                <LogOut size={18} />
-              </button>
-            </div>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden flex items-center justify-center rounded-md p-2 text-slate-600 hover:text-green-700 hover:bg-slate-100 hover:scale-105 transition-all"
+            >
+              <Menu size={22} />
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 space-y-3 bg-white rounded-lg shadow-md p-4">
+            <NavLink to="/" label="Home" isActive={isActive("/")} />
+            <NavLink to="/predict" label="Sell" isActive={isActive("/predict")} />
+            <NavLink to="/marketplace" label="Marketplace" isActive={isActive("/marketplace")} />
+            <Link
+              to="/profile"
+              className="block text-sm font-medium text-slate-600 hover:text-green-700 hover:scale-105 transition-all"
+            >
+              Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left text-sm font-medium text-red-600 hover:bg-red-50 hover:scale-105 transition-all"
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </nav>
-  )
+  );
+}
+
+function NavLink({ to, label, icon, isActive }) {
+  return (
+    <Link
+      to={to}
+      className={`relative inline-flex items-center gap-3 px-5 py-2 rounded-full text-sm font-medium transition-all ${
+        isActive
+          ? "text-green-700 bg-green-50 shadow-md"
+          : "text-slate-600 hover:text-green-700 hover:bg-slate-100"
+      }`}
+    >
+      {icon}
+      <span>{label}</span>
+      {isActive && (
+        <span className="absolute inset-x-5 -bottom-1 h-0.5 rounded-full bg-green-600 transition-all" />
+      )}
+    </Link>
+  );
 }
