@@ -15,4 +15,11 @@ opencv-python
 razorpay
 python-jose[cryptography]
 passlib[bcrypt]
-
+langchain
+langchain-community
+langchain-huggingface
+faiss-cpu
+sentence-transform
+groq
+python-dotenv
+tqdm
