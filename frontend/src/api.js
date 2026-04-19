@@ -130,3 +130,16 @@ export async function verifyCreditPayment(formData) {
   })
   return safeJson(res)
 }
+
+export async function resolveSupport(ticket) {
+  const res = await fetch(`${BASE_URL}/support/resolve`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+    body: JSON.stringify({ ticket }),
+  })
+
+  return safeJson(res)
+}

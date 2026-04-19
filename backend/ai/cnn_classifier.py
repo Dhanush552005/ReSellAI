@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='tensorflow')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "models", "cnn_model.h5") 
+MODEL_PATH = os.path.join(BASE_DIR, "ml_models", "cnn_model.h5") 
 IMAGE_SIZE = (224, 224) 
 
 CLASS_NAMES = [

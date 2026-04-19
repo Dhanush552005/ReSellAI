@@ -53,6 +53,7 @@ export default function Navbar({ user, setUser }) {
               <User size={20} />
               <span className="capitalize">{user.username}</span>
             </Link>
+            <Link to="/support">Support</Link>
 
             <button
               onClick={handleLogout}

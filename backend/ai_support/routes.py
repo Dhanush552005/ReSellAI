@@ -1,8 +1,12 @@
 from fastapi import APIRouter
+
 from .schemas import SupportRequest
 from .agents import run_support_pipeline
 
-router = APIRouter(prefix="/support", tags=["Support"])
+router = APIRouter(
+    prefix="/support",
+    tags=["Support"]
+)
 
 
 @router.post("/resolve")

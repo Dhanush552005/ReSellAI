@@ -10,6 +10,7 @@ import Register from "./pages/Register"
 import Profile from "./pages/Profile"
 import Marketplace from "./pages/Marketplace"
 import Navbar from "./components/Navbar"
+import Support from "./pages/Support"
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -50,7 +51,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login fetchUser={fetchUser} />} />
               <Route path="/register" element={<Register />} />
-
+              <Route path="/support" element={<Support />} />
               <Route
                 path="/predict"
                 element={user ? <Predict user={user} fetchUser={fetchUser} /> : <Navigate to="/login" />}

@@ -1,6 +1,5 @@
 
-env.py
-backend/env.py
+
 .env
 .env.*
 
@@ -19,7 +18,7 @@ ENV/
 *.pt
 *.h5
 *.pkl
-models/
+ml_models/
 
 Datasets/
 ipynb code/

@@ -23,3 +23,6 @@ sentence-transform
 groq
 python-dotenv
 tqdm
+sqlalchemy
+pymysql
+alembic
