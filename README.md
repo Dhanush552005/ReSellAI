@@ -1,11 +1,5 @@
 # 📱 ReSellAI – AI Mobile Resale & Marketplace Platform
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104%2B-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-18.0%2B-61DAFB?logo=react)](https://react.dev/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?logo=mysql)](https://www.mysql.com/)
-[![License](https://img.shields.io/badge/License-MIT-green)](#license)
-
 ## 📋 Executive Summary
 
 **ReSellAI** is a production-grade **AI-powered mobile phone resale marketplace** that combines computer vision, machine learning, and cloud payments to create a trustworthy P2P trading platform. The platform accurately estimates phone resale values through damage analysis and device specifications, while providing automated customer support via RAG (Retrieval-Augmented Generation).
