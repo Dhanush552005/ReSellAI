@@ -1,4 +1,4 @@
-# 📱 ReSellAI – Production-Grade AI Mobile Resale & Marketplace Platform
+# 📱 ReSellAI – AI Mobile Resale & Marketplace Platform
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104%2B-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
