@@ -476,7 +476,7 @@ npm run dev
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - YOLOv8 by Ultralytics
 - ResNet by Microsoft Research
