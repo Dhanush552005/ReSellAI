@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .db.database import Base, engine
+from db.database import Base, engine
 
 from .api.auth import router as auth_router
 from .api.predict import router as predict_router

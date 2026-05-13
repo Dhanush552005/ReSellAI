@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { getMarketplace, createPhoneOrder, verifyPhonePayment, markSold } from "../api"
-import { motion } from "framer-motion"
-import { Smartphone, ShieldCheck, Tag, CheckCircle2, Search } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Smartphone, ShieldCheck, Tag, CheckCircle2, Search, Filter, SlidersHorizontal, ArrowUpRight, ShoppingBag, X } from "lucide-react"
 
 export default function Marketplace({ user, fetchUser }) {
   const [phones, setPhones] = useState([])
@@ -27,25 +27,17 @@ export default function Marketplace({ user, fetchUser }) {
 
   const handleMarkSold = async (phoneId) => {
     if (!window.confirm("Are you sure you want to mark this as sold?")) return
-    
     const result = await markSold(phoneId)
     if (!result.error) {
-      alert("Successfully marked as sold!")
       await loadPhones()
-    } else {
-      alert(result.error)
     }
   }
 
   const handleBuy = async (phone) => {
-  
     const userId = user?._id?.toString()
-
-    const sellerId =
-      typeof phone?.seller_id === "object"
+    const sellerId = typeof phone?.seller_id === "object"
         ? phone.seller_id.$oid || phone.seller_id._id || phone.seller_id.toString()
         : phone.seller_id?.toString()
-
     const isOwner = userId && sellerId && userId === sellerId
 
     if (isOwner) {
@@ -57,7 +49,6 @@ export default function Marketplace({ user, fetchUser }) {
     try {
       const order = await createPhoneOrder(phone._id)
       if (order.error) {
-        alert(typeof order.error === "object" ? JSON.stringify(order.error) : order.error)
         setBuyingId(null)
         return
       }
@@ -78,11 +69,8 @@ export default function Marketplace({ user, fetchUser }) {
 
           const result = await verifyPhonePayment(formData)
           if (result.message) {
-            alert("Purchase Successful!")
             await loadPhones()
             if (fetchUser) await fetchUser()
-          } else {
-            alert(result.error || "Payment verification failed")
           }
           setBuyingId(null)
         },
@@ -90,7 +78,7 @@ export default function Marketplace({ user, fetchUser }) {
           name: user?.username || "Guest User",
           email: user?.email || "test@example.com",
         },
-        theme: { color: "#16a34a" },
+        theme: { color: "#5B8CFF" },
         modal: { ondismiss: () => setBuyingId(null) },
       }
 
@@ -103,10 +91,7 @@ export default function Marketplace({ user, fetchUser }) {
   }
 
   const filteredPhones = useMemo(() => {
-    const base = phones.filter(
-      (p) => p.status?.toLowerCase() === view.toLowerCase()
-    )
-
+    const base = phones.filter((p) => p.status?.toLowerCase() === view.toLowerCase())
     const bySearch = base.filter((p) => {
       if (!search.trim()) return true
       const q = search.toLowerCase()
@@ -114,244 +99,250 @@ export default function Marketplace({ user, fetchUser }) {
       const specs = `${p.ram || ""} ${p.storage || ""}`.toLowerCase()
       return brand.includes(q) || specs.includes(q)
     })
-
-    const byBrand = brandFilter
-      ? bySearch.filter(
-          (p) =>
-            (p.brand || "").toString().toLowerCase() ===
-            brandFilter.toLowerCase()
-        )
-      : bySearch
-
+    const byBrand = brandFilter ? bySearch.filter((p) => (p.brand || "").toString().toLowerCase() === brandFilter.toLowerCase()) : bySearch
     const sorted = [...byBrand]
-    if (sortOrder === "price_asc") {
-      sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
-    } else if (sortOrder === "price_desc") {
-      sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
-    }
-
+    if (sortOrder === "price_asc") sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
+    else if (sortOrder === "price_desc") sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
     return sorted
   }, [phones, view, search, brandFilter, sortOrder])
 
   const brandOptions = useMemo(() => {
-    const set = new Set(
-      phones
-        .map((p) => (p.brand || "").toString().toLowerCase())
-        .filter(Boolean)
-    )
+    const set = new Set(phones.map((p) => (p.brand || "").toString().toLowerCase()).filter(Boolean))
     return Array.from(set).sort()
   }, [phones])
- const damageLabel = (damage) => {
-    return {
-      no_broken: "No Damage",
-      light_broken: "Light Damage",
-      moderately_broken: "Moderate Damage",
-      severe_broken: "Severe Damage",
-    }[damage] || damage
-  }
 
-  const damageStyle = (damage) => {
-    if (damage === "no_broken")
-      return "bg-green-50 text-green-700 border border-green-200"
-    if (damage === "light_broken")
-      return "bg-yellow-50 text-yellow-700 border border-yellow-200"
-    if (damage === "moderately_broken")
-      return "bg-orange-50 text-orange-700 border border-orange-200"
-    return "bg-red-50 text-red-700 border border-red-200"
-  }
-
-  if (loading)
-    return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-indigo-400 font-medium">Loading Marketplace...</p>
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center py-32 space-y-4">
+      <div className="relative">
+        <div className="w-16 h-16 border-4 border-brand-primary/10 rounded-full" />
+        <div className="w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
       </div>
-    )
+      <p className="text-slate-500 font-medium animate-pulse">Syncing Marketplace...</p>
+    </div>
+  )
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
-      <div className="mb-6 space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900">
-              Refurbished phones marketplace
-            </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              AI-verified devices with transparent, fair pricing.
-            </p>
+    <div className="max-w-7xl mx-auto space-y-12">
+      {/* Header & Controls */}
+      <div className="space-y-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Marketplace</h1>
+            <p className="text-lg text-slate-500">Discover AI-validated hardware at fractional costs.</p>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 p-1 text-xs font-medium">
+          <div className="glass-panel p-1.5 flex items-center gap-1">
             <button
               onClick={() => setView("on_sale")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors ${
-                view === "on_sale"
-                  ? "bg-green-600 text-white"
-                  : "text-slate-600 hover:bg-white"
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl transition-all duration-300 font-bold text-sm ${
+                view === "on_sale" ? "bg-white shadow-sm text-brand-primary border border-slate-100" : "text-slate-400 hover:text-slate-600"
               }`}
             >
-              <Tag size={14} />
-              <span>On Sale</span>
+              <Tag size={16} />
+              Live Listings
             </button>
             <button
               onClick={() => setView("sold")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors ${
-                view === "sold"
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-600 hover:bg-white"
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl transition-all duration-300 font-bold text-sm ${
+                view === "sold" ? "bg-white shadow-sm text-slate-900 border border-slate-100" : "text-slate-400 hover:text-slate-600"
               }`}
             >
-              <CheckCircle2 size={14} />
-              <span>Sold</span>
+              <CheckCircle2 size={16} />
+              Archive
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="w-full sm:max-w-xs relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+        {/* Filter Bar */}
+        <div className="glass-panel p-4 flex flex-col md:flex-row items-center gap-4">
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by brand or specs"
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Search by model, brand, or specifications..."
+              className="w-full bg-white/50 border border-slate-100 pl-11 pr-4 py-3 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-brand-primary/20 transition-all outline-none"
             />
           </div>
+          
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="relative flex-1 md:w-48">
+              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <select
+                value={brandFilter}
+                onChange={(e) => setBrandFilter(e.target.value)}
+                className="w-full bg-white/50 border border-slate-100 pl-10 pr-4 py-3 rounded-2xl text-sm appearance-none outline-none focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="">All Brands</option>
+                {brandOptions.map((b) => (
+                  <option key={b} value={b}>{b.charAt(0).toUpperCase() + b.slice(1)}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="flex flex-wrap gap-2 sm:gap-3 justify-start sm:justify-end">
-            <select
-              value={brandFilter}
-              onChange={(e) => setBrandFilter(e.target.value)}
-              className="min-w-[9rem] px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            >
-              <option value="">All brands</option>
-              {brandOptions.map((b) => (
-                <option key={b} value={b}>
-                  {b.charAt(0).toUpperCase() + b.slice(1)}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="min-w-[10rem] px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            >
-              <option value="price_asc">Price · Low to High</option>
-              <option value="price_desc">Price · High to Low</option>
-            </select>
+            <div className="relative flex-1 md:w-48">
+              <SlidersHorizontal className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="w-full bg-white/50 border border-slate-100 pl-10 pr-4 py-3 rounded-2xl text-sm appearance-none outline-none focus:bg-white transition-all cursor-pointer"
+              >
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
 
-      {filteredPhones.length === 0 ? (
-        <div className="text-center py-16 rounded-2xl border border-dashed border-slate-200 bg-slate-50">
-          <Smartphone className="mx-auto text-slate-400 mb-4" size={40} />
-          <p className="text-sm text-slate-500">
-            No {view.replace("_", " ")} devices match your filters.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
-          {filteredPhones.map((phone) => {
-            
-            const userId = user?._id?.toString()
-
-            const sellerId =
-              typeof phone?.seller_id === "object"
-                ? phone.seller_id.$oid ||
-                  phone.seller_id._id ||
-                  phone.seller_id.toString()
-                : phone.seller_id?.toString()
-
-            const isOwner = userId && sellerId && userId === sellerId
-
-            return (
-              <motion.div
-                key={phone._id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all group relative"
-              >
-                {phone.status?.toLowerCase() === "sold" && (
-                  <div className="absolute inset-0 z-10 bg-slate-900/5 flex items-center justify-center">
-                    <div className="bg-slate-900 text-white px-4 py-1.5 rounded-full font-semibold text-xs uppercase tracking-wide shadow-sm">
-                      SOLD
-                    </div>
-                  </div>
-                )}
-
-                <div className="relative bg-slate-100 overflow-hidden">
-                  <div className="pt-[100%]" />
-                  <img
-                    src={`http://localhost:8000/${phone.image_path}`}
-                    alt={phone.brand}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-green-50 px-3 py-1 rounded-full border border-green-100 text-[11px] font-medium text-green-700 flex items-center gap-1">
-                    <ShieldCheck size={12} /> AI Verified
-                  </div>
-                </div>
-
-                <div className="p-4 space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-sm sm:text-base font-semibold text-slate-900 capitalize">
-                        {phone.brand}
-                      </h3>
-                       <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                      {phone.ram}GB RAM · {phone.storage}GB Storage · {phone.age} Year Old
-                    </p>
-                    {phone.damage && (
-                      <div className={`mt-2 inline-flex px-2.5 py-1 rounded-full text-[11px] font-medium ${damageStyle(phone.damage)}`}>
-                        {damageLabel(phone.damage)}
-                      </div>
-                    )}
-                    </div>
-                    <div className="text-right">
-                      <p className="text-[11px] text-slate-400 uppercase tracking-wide">
-                        Price
-                      </p>
-                      <p className="text-xl font-semibold text-green-600">
-                        ₹{phone.price.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    {phone.status?.toLowerCase() === "on_sale" && (
-                      <>
-                        {isOwner ? (
-                          <button
-                            onClick={() => handleMarkSold(phone._id)}
-                            className="w-full py-2.5 rounded-xl text-sm font-semibold bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 transition-all flex items-center justify-center gap-2"
-                          >
-                            <CheckCircle2 size={18} /> Mark as Sold
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleBuy(phone)}
-                            disabled={buyingId === phone._id}
-                            className={`w-full py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                              buyingId === phone._id
-                                ? "bg-green-100 text-green-700 animate-pulse"
-                                : "bg-green-600 hover:bg-green-700 text-white shadow-md"
-                            }`}
-                          >
-                            {buyingId === phone._id ? "Opening..." : "Buy now"}
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
-      )}
+      {/* Grid */}
+      <AnimatePresence mode="popLayout">
+        {filteredPhones.length === 0 ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-24 glass-panel border-dashed border-slate-200"
+          >
+            <Smartphone className="mx-auto text-slate-300 mb-6" size={64} strokeWidth={1} />
+            <h3 className="text-xl font-bold text-slate-800">No Inventory Found</h3>
+            <p className="text-slate-500 mt-2">Try adjusting your filters or search terms.</p>
+          </motion.div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredPhones.map((phone) => (
+              <ProductCard 
+                key={phone._id} 
+                phone={phone} 
+                user={user} 
+                onBuy={handleBuy} 
+                onMarkSold={handleMarkSold} 
+                buyingId={buyingId} 
+              />
+            ))}
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
+
+function ProductCard({ phone, user, onBuy, onMarkSold, buyingId }) {
+  const userId = user?._id?.toString()
+  const sellerId = typeof phone?.seller_id === "object"
+    ? phone.seller_id.$oid || phone.seller_id._id || phone.seller_id.toString()
+    : phone.seller_id?.toString()
+  const isOwner = userId && sellerId && userId === sellerId
+  const isSold = phone.status?.toLowerCase() === "sold"
+
+  const damageLabels = {
+    no_broken: { label: "Mint", color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    light_broken: { label: "Good", color: "text-amber-500", bg: "bg-amber-500/10" },
+    moderately_broken: { label: "Fair", color: "text-orange-500", bg: "bg-orange-500/10" },
+    severe_broken: { label: "Poor", color: "text-red-500", bg: "bg-red-500/10" },
+  }
+  const status = damageLabels[phone.damage] || damageLabels.light_broken
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      className="glass-card group flex flex-col h-full border-white/40"
+    >
+      {/* Image Section */}
+      <div className="relative aspect-square overflow-hidden rounded-[1.5rem] m-3 bg-slate-100">
+        <img
+          src={`http://localhost:8000/${phone.image_path}`}
+          alt={phone.brand}
+          className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isSold ? 'grayscale' : ''}`}
+        />
+        
+        {/* Overlays */}
+        <div className="absolute top-4 left-4 flex gap-2">
+          <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-white">
+            <ShieldCheck size={14} className="text-brand-primary" />
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-wider">AI Verified</span>
+          </div>
+        </div>
+
+        {isSold && (
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center">
+            <div className="bg-white px-6 py-2 rounded-full font-bold text-sm tracking-widest text-slate-900 shadow-xl">
+              SOLD
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Content Section */}
+      <div className="p-6 pt-2 flex-1 flex flex-col space-y-4">
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <h3 className="text-xl font-bold text-slate-900 capitalize leading-tight group-hover:text-brand-primary transition-colors">
+              {phone.brand}
+            </h3>
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest">
+              {phone.ram}GB / {phone.storage}GB · {phone.age}y
+            </p>
+          </div>
+          <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white/50 ${status.bg} ${status.color}`}>
+            {status.label}
+          </div>
+        </div>
+
+        <div className="pt-2 flex items-end justify-between">
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pricing</p>
+            <p className="text-3xl font-bold text-slate-900 tracking-tighter">
+              ₹{phone.price.toLocaleString()}
+            </p>
+          </div>
+          
+          <div className="pb-1">
+            {!isSold && (
+              isOwner ? (
+                <button
+                  onClick={() => onMarkSold(phone._id)}
+                  className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300"
+                  title="Mark as Sold"
+                >
+                  <X size={18} />
+                </button>
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-lg shadow-brand-primary/20 group-hover:scale-110 transition-transform duration-300">
+                  <ShoppingBag size={18} />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+
+        {!isSold && !isOwner && (
+          <button
+            onClick={() => onBuy(phone)}
+            disabled={buyingId === phone._id}
+            className="w-full py-4 rounded-2xl bg-brand-primary text-white font-bold text-sm shadow-xl shadow-brand-primary/10 hover:bg-brand-primary/90 transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            {buyingId === phone._id ? (
+              <RefreshCw size={18} className="animate-spin" />
+            ) : (
+              <>Purchase Item <ArrowUpRight size={18} /></>
+            )}
+          </button>
+        )}
+
+        {isOwner && !isSold && (
+          <button
+            onClick={() => onMarkSold(phone._id)}
+            className="w-full py-4 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all duration-300"
+          >
+            Mark as Sold
+          </button>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
