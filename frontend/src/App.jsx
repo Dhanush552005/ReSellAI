@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import { motion } from "framer-motion"
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import { getMe } from "./api"
 import Home from "./pages/Home"
@@ -11,6 +11,24 @@ import Profile from "./pages/Profile"
 import Marketplace from "./pages/Marketplace"
 import Navbar from "./components/Navbar"
 import Support from "./pages/Support"
+
+const PageWrapper = ({ children }) => {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -20, scale: 1.02 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full"
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  )
+}
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -37,16 +55,18 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-        {user && <Navbar user={user} setUser={setUser} />}
+      <div className="min-h-screen flex flex-col bg-vision-gradient relative overflow-hidden">
+        {/* Ambient Spatial Blobs */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/10 blur-[120px] rounded-full animate-pulse-slow" />
+          <div className="absolute bottom-[10%] right-[-5%] w-[35%] h-[35%] bg-brand-premium/10 blur-[100px] rounded-full animate-pulse-slow-reverse" />
+          <div className="absolute top-[20%] right-[15%] w-[20%] h-[20%] bg-brand-secondary/10 blur-[80px] rounded-full animate-pulse-slow" />
+        </div>
 
-        <main className="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 pb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full rounded-2xl bg-white border border-slate-200 shadow-md p-4 sm:p-6 lg:p-8"
-          >
+        <Navbar user={user} setUser={setUser} />
+
+        <main className="flex-grow w-full pt-24 pb-16 px-4 sm:px-6 lg:px-8 relative z-10 max-w-[1440px] mx-auto">
+          <PageWrapper>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login fetchUser={fetchUser} />} />
@@ -56,32 +76,33 @@ export default function App() {
                 path="/predict"
                 element={user ? <Predict user={user} fetchUser={fetchUser} /> : <Navigate to="/login" />}
               />
-
               <Route
                 path="/credits"
                 element={user ? <Credits fetchUser={fetchUser} /> : <Navigate to="/login" />}
               />
-
               <Route
                 path="/profile"
                 element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/login" />}
               />
-
               <Route
                 path="/marketplace"
                 element={user ? <Marketplace user={user} fetchUser={fetchUser} /> : <Navigate to="/login" />}
               />
             </Routes>
-          </motion.div>
+          </PageWrapper>
         </main>
 
-        <footer className="bg-white border-t">
-          <div className="max-w-6xl mx-auto px-6 py-8 text-sm text-gray-500 flex justify-between">
-            <p>© {new Date().getFullYear()} ReSellAI. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-gray-800">Privacy</a>
-              <a href="#" className="hover:text-gray-800">Terms</a>
-              <a href="#" className="hover:text-gray-800">Support</a>
+        <footer className="relative z-10 border-t border-white/20 bg-white/30 backdrop-blur-md py-12">
+          <div className="max-w-7xl mx-auto px-6 text-sm text-slate-500 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-slate-800 text-lg tracking-tight">ReSell<span className="text-brand-primary">AI</span></span>
+              <span className="text-slate-300 ml-2">|</span>
+              <p className="ml-2">© {new Date().getFullYear()} All rights reserved.</p>
+            </div>
+            <div className="flex gap-8">
+              <a href="#" className="hover:text-brand-primary transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-brand-primary transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-brand-primary transition-colors">Contact Support</a>
             </div>
           </div>
         </footer>
@@ -89,3 +110,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
