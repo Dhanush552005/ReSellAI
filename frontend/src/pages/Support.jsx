@@ -70,12 +70,7 @@ export default function Support() {
           animate="visible"
           variants={containerVariants}
           className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-sm font-semibold mb-6">
-            <Zap size={14} />
-            <span>AI-Powered Resolution</span>
-          </div>
-          
+        > 
           <h1 className="text-6xl font-extrabold tracking-tight mb-4 text-slate-900">
             Support <span className="text-brand-primary">Assistant</span>
           </h1>
@@ -218,4 +213,4 @@ function ResultCard({ icon, title, value, isFull = false, variants }) {
       </div>
     </motion.div>
   )
-}
+}

@@ -65,10 +65,6 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full lg:w-3/5 space-y-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-sm font-semibold mb-4">
-              <Sparkles size={16} />
-              <span>Next-Gen Smartphone Resale</span>
-            </div>
             <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1]">
               The Future of <br />
               <span className="text-brand-primary">Smartphone Resale</span> <br />
@@ -241,4 +237,4 @@ export default function Home() {
       </section>
     </div>
   )
-}
+}

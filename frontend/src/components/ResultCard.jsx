@@ -29,7 +29,6 @@ const DAMAGE_STYLES = {
     border: "border-red-500/20",
   },
 }
-
 export default function ResultCard({ prediction, setPrediction }) {
   const [displayPrice, setDisplayPrice] = useState(0)
   const [selling, setSelling] = useState(false)
@@ -37,7 +36,6 @@ export default function ResultCard({ prediction, setPrediction }) {
 
   const status = prediction?.status
   const resalePrice = Math.round(Number(prediction?.resale_price)) || 0
-
   useEffect(() => {
     if (!prediction || status !== "accepted") return
 
@@ -249,4 +247,4 @@ export default function ResultCard({ prediction, setPrediction }) {
       </div>
     </motion.div>
   )
-}
+}

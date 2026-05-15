@@ -18,8 +18,6 @@ export default function Predict({ user, fetchUser }) {
           animate={{ opacity: 1, y: 0 }}
           className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-bold uppercase tracking-wider"
         >
-          <Sparkles size={14} />
-          AI Diagnosis
         </motion.div>
         <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
           Value Your Device

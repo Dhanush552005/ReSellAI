@@ -1,8 +1,17 @@
 import { useState } from "react"
 import { predictResale } from "../api"
 import { motion, AnimatePresence } from "framer-motion"
-import { Upload, Smartphone, Database, MemoryStick, Calendar, AlertCircle, Scan, Cpu } from "lucide-react"
-
+import { 
+  Upload,
+  Smartphone,
+  Database,
+  MemoryStick,
+  Calendar,
+  AlertCircle,
+  Scan,
+  Cpu,
+  ArrowRight
+} from "lucide-react"
 const RAM_OPTIONS = {
   apple: [4, 6, 8, 12],
   samsung: [4, 6, 8, 12, 16, 24],
@@ -240,4 +249,4 @@ export default function UploadForm({ setPrediction, setLoading, loading, fetchUs
       <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-brand-primary/5 blur-3xl rounded-full pointer-events-none" />
     </motion.form>
   )
-}
+}

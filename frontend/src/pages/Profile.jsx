@@ -52,9 +52,6 @@ export default function Profile({ user, setUser }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="glass-button-secondary p-3 rounded-2xl">
-            <Settings size={20} />
-          </button>
           <button 
             onClick={handleLogout}
             className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-500 text-white font-bold text-sm shadow-xl shadow-red-500/10 hover:bg-red-600 transition-all"
@@ -96,30 +93,6 @@ export default function Profile({ user, setUser }) {
             </div>
             {/* Background Blob */}
             <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-brand-primary/10 blur-3xl rounded-full pointer-events-none" />
-          </div>
-
-          <div className="glass-panel p-2 flex flex-col gap-1">
-            <button className="flex items-center justify-between p-4 rounded-2xl bg-white shadow-sm border border-slate-100 text-brand-primary font-bold">
-              <div className="flex items-center gap-3">
-                <LayoutDashboard size={20} />
-                Dashboard Overview
-              </div>
-              <ArrowRight size={16} />
-            </button>
-            <button className="flex items-center justify-between p-4 rounded-2xl text-slate-500 font-bold hover:bg-white/40 transition-all">
-              <div className="flex items-center gap-3">
-                <History size={20} />
-                Transaction History
-              </div>
-              <ArrowRight size={16} />
-            </button>
-            <button className="flex items-center justify-between p-4 rounded-2xl text-slate-500 font-bold hover:bg-white/40 transition-all">
-              <div className="flex items-center gap-3">
-                <ShieldCheck size={20} />
-                Security Settings
-              </div>
-              <ArrowRight size={16} />
-            </button>
           </div>
         </div>
 

@@ -10,9 +10,9 @@ import {
   Home, 
   Menu,
   X,
-  ArrowRight
+  ArrowRight,
+  HelpCircle
 } from "lucide-react";
-
 export default function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +35,7 @@ export default function Navbar({ user, setUser }) {
     { to: "/", label: "Home", icon: <Home size={18} /> },
     { to: "/predict", label: "Sell Item", icon: <ScanSearch size={18} /> },
     { to: "/marketplace", label: "Marketplace", icon: <Store size={18} /> },
+    { to: "/support", label: "AI Support", icon: <HelpCircle size={18} /> },
   ];
 
   return (
