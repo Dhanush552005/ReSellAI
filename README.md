@@ -85,7 +85,7 @@
                │ SQL / Vector Queries
 ┌──────────────┴──────────────┐
 │                             │
-│  MySQL Database      FAISS Vector DB
+│  PostgreSQL Database      FAISS Vector DB
 │  ├─ Users           ├─ Policy Docs
 │  ├─ Phones          └─ Embeddings
 │  ├─ Predictions
@@ -182,7 +182,7 @@ Example:
 ### Backend
 - **Language**: Python 3.10+
 - **Framework**: FastAPI 0.104+
-- **Database**: MySQL 8.0+ with SQLAlchemy ORM
+- **Database**: PostgreSQL (Neon Cloud Database) with SQLAlchemy ORM
 - **ML/Vision**: 
   - PyTorch (YOLO v8)
   - TensorFlow/Keras (ResNet50)
@@ -333,7 +333,7 @@ Performance: <2 seconds per ticket
 ### Prerequisites
 - Python 3.10+
 - Node.js 18+ & npm
-- MySQL 8.0+
+- PostgreSQL (Neon Cloud Database)
 - Groq API key (LLM support)
 - Razorpay API keys (payments)
 
@@ -357,7 +357,7 @@ pip install -r requirement.txt
 
 # Create .env file
 cat > .env << EOF
-DATABASE_URL=mysql+pymysql://root:password@localhost/resellai
+DATABASE_URL=postgresql+psycopg2://username:password@host/neondb?sslmode=require
 JWT_SECRET_KEY=your_secret_key_here
 GROQ_API_KEY=your_groq_api_key
 RAZORPAY_KEY_ID=your_razorpay_key
@@ -400,7 +400,7 @@ npm run dev
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `DATABASE_URL` | MySQL connection string | `mysql+pymysql://user:pass@localhost/db` |
+| `DATABASE_URL` | PostgreSQL (Neon) connection string | `postgresql+psycopg2://user@host/neondb?sslmode=require` |
 | `JWT_SECRET_KEY` | Secret key for JWT signing | `your_secret_here` |
 | `JWT_ALGORITHM` | JWT encoding algorithm | `HS256` |
 | `JWT_EXPIRATION_HOURS` | Token expiry (hours) | `24` |
