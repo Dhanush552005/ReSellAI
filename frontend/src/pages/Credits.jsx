@@ -187,4 +187,4 @@ export default function Credits({ fetchUser }) {
       </div>
     </div>
   )
-}
+}
