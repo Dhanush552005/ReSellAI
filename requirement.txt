@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 python-multipart
-motor
 pydantic-settings
 tensorflow
 ultralytics
@@ -19,10 +18,10 @@ langchain
 langchain-community
 langchain-huggingface
 faiss-cpu
-sentence-transform
+sentence-transformers
 groq
 python-dotenv
 tqdm
 sqlalchemy
-pymysql
+psycopg2-binary
 alembic

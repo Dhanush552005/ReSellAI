@@ -10,12 +10,12 @@ ENV_PATH = BASE_DIR / ".env"
 
 load_dotenv(dotenv_path=ENV_PATH)
 
-MYSQL_URL = os.getenv("MYSQL_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-print("MYSQL_URL =", MYSQL_URL)
+print("DATABASE_URL =", DATABASE_URL)
 
 engine = create_engine(
-    MYSQL_URL,
+    DATABASE_URL,
     pool_pre_ping=True
 )
 

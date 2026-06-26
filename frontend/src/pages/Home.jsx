@@ -16,8 +16,7 @@ export default function Home() {
     { name: "Xiaomi", logo: xiaomiLogo },
     { name: "Samsung", logo: samsungLogo },
     { name: "OnePlus", logo: oneplusLogo },
-    { name: "Google", logo: oneplusLogo },
-    { name: "Vivo", logo: xiaomiLogo }
+    { name: "Redmi", logo: xiaomiLogo }
   ]
 
   const features = [
