@@ -1,8 +1,13 @@
 import os
+import gdown
+
 from dotenv import load_dotenv
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / "ml_models"
+MODEL_DIR.mkdir(exist_ok=True)
+
 load_dotenv(BASE_DIR / ".env")
 
 MODELS = {
