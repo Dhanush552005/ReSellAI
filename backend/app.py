@@ -2,14 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from .download_models import download_models
+
+# Download models FIRST
+download_models()
+
 from .db.database import Base, engine
-
-from .api.auth import router as auth_router
-from .api.predict import router as predict_router
-from .api.payments import router as payments_router
-from .api.marketplace import router as marketplace_router
-
-from .ai_support.routes import router as support_router
 
 from .models import (
     user,
@@ -20,10 +18,16 @@ from .models import (
 
 Base.metadata.create_all(bind=engine)
 
+# Import API routes AFTER models have been downloaded
+from .api.auth import router as auth_router
+from .api.predict import router as predict_router
+from .api.payments import router as payments_router
+from .api.marketplace import router as marketplace_router
+from .ai_support.routes import router as support_router
+
 app = FastAPI(
     title="ReSellAI - Mobile Resale Backend"
 )
-
 app.mount(
     "/uploads",
     StaticFiles(directory="uploads"),

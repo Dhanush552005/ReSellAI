@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
 pydantic-settings
 tensorflow
@@ -8,6 +8,7 @@ torch
 torchvision
 xgboost
 scikit-learn
+joblib
 pillow
 numpy
 opencv-python
@@ -20,8 +21,10 @@ langchain-huggingface
 faiss-cpu
 sentence-transformers
 groq
+gdown
 python-dotenv
 tqdm
 sqlalchemy
-psycopg2-binary
+psycopg[binary]
 alembic
+python-magic
