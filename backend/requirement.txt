@@ -25,6 +25,6 @@ gdown
 python-dotenv
 tqdm
 sqlalchemy
-psycopg[binary]
+psycopg2-binary
 alembic
 python-magic
