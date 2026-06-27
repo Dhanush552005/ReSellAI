@@ -1,14 +1,10 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
 from .download_models import download_models
-
-# Download models FIRST
 download_models()
-
 from .db.database import Base, engine
-
 from .models import (
     user,
     phone,
@@ -18,7 +14,6 @@ from .models import (
 
 Base.metadata.create_all(bind=engine)
 
-# Import API routes AFTER models have been downloaded
 from .api.auth import router as auth_router
 from .api.predict import router as predict_router
 from .api.payments import router as payments_router
@@ -37,8 +32,9 @@ app.mount(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173"
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    os.getenv("FRONTEND_URL", "")
     ],
     allow_credentials=True,
     allow_methods=["*"],
