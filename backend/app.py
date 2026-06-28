@@ -17,12 +17,21 @@ from .models import (
 
 Base.metadata.create_all(bind=engine)
 
+print("STEP 4")
 from .api.auth import router as auth_router
-from .api.predict import router as predict_router
-from .api.payments import router as payments_router
-from .api.marketplace import router as marketplace_router
-from .ai_support.routes import router as support_router
+print("STEP 5")
 
+from .api.predict import router as predict_router
+print("STEP 6")
+
+from .api.payments import router as payments_router
+print("STEP 7")
+
+from .api.marketplace import router as marketplace_router
+print("STEP 8")
+
+from .ai_support.routes import router as support_router
+print("STEP 9")
 app = FastAPI(
     title="ReSellAI - Mobile Resale Backend"
 )
