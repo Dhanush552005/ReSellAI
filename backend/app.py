@@ -48,10 +48,10 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
-app.include_router(predict_router)
+#app.include_router(predict_router)
 app.include_router(payments_router)
 app.include_router(marketplace_router)
-app.include_router(support_router)
+#app.include_router(support_router)
 
 
 @app.get("/")
