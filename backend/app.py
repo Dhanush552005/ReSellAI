@@ -20,10 +20,10 @@ from .models import (
 Base.metadata.create_all(bind=engine)
 
 from .api.auth import router as auth_router
-#from .api.predict import router as predict_router
+from .api.predict import router as predict_router
 from .api.payments import router as payments_router
 from .api.marketplace import router as marketplace_router
-#from .ai_support.routes import router as support_router
+from .ai_support.routes import router as support_router
 
 app = FastAPI(
     title="ReSellAI - Mobile Resale Backend"
@@ -48,10 +48,10 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
-#app.include_router(predict_router)
+app.include_router(predict_router)
 app.include_router(payments_router)
 app.include_router(marketplace_router)
-#app.include_router(support_router)
+app.include_router(support_router)
 
 
 @app.get("/")
