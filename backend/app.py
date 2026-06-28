@@ -3,8 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from .download_models import download_models
+print("STEP 1")
 download_models()
+print("STEP 2")
 from .db.database import Base, engine
+print("STEP 3")
 from .models import (
     user,
     phone,
