@@ -20,12 +20,32 @@ from ..ai.price_engine import calculate_resale_price
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-detector = YOLOScreenDetector(
-    model_path="ml_models/yolo.pt",
-    conf_threshold=0.73
-)
+# Lazy loaded models
+detector = None
+ml_model = None
 
-ml_model = ResaleMLModel()
+
+def get_detector():
+    global detector
+
+    if detector is None:
+        print("Loading YOLO model...")
+        detector = YOLOScreenDetector(
+            model_path="ml_models/yolo.pt",
+            conf_threshold=0.73
+        )
+
+    return detector
+
+
+def get_ml_model():
+    global ml_model
+
+    if ml_model is None:
+        print("Loading XGBoost model...")
+        ml_model = ResaleMLModel()
+
+    return ml_model
 
 
 def run_prediction(
@@ -39,6 +59,9 @@ def run_prediction(
     body_broken,
     user
 ):
+    detector = get_detector()
+    ml_model = get_ml_model()
+
     if user.credits <= 0:
         raise HTTPException(
             status_code=403,

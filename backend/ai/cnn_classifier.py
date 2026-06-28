@@ -7,11 +7,11 @@ from tensorflow.keras.applications.resnet50 import preprocess_input as resnet_pr
 from PIL import Image
 import warnings
 
-warnings.filterwarnings('ignore', category=UserWarning, module='tensorflow')
+warnings.filterwarnings("ignore", category=UserWarning, module="tensorflow")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "ml_models", "cnn_model.h5") 
-IMAGE_SIZE = (224, 224) 
+MODEL_PATH = os.path.join(BASE_DIR, "ml_models", "cnn_model.h5")
+IMAGE_SIZE = (224, 224)
 
 CLASS_NAMES = [
     "light_broken",
@@ -22,42 +22,37 @@ CLASS_NAMES = [
 
 CLASS_MAPPING = {i: name for i, name in enumerate(CLASS_NAMES)}
 
-def load_model_keras():
-    if not os.path.exists(MODEL_PATH):
-        print(f"ERROR: Model file not found at {MODEL_PATH}")
-        return None
-        
-    try:
-        model = load_model(MODEL_PATH)
-        print("Keras ResNet50 model loaded successfully.")
-        return model
-    except Exception as e:
-        print(f"Error loading Keras model: {e}")
-        return None
+# Lazy loaded CNN model
+MODEL = None
 
-MODEL = load_model_keras()
+
+def get_model():
+    global MODEL
+
+    if MODEL is None:
+        if not os.path.exists(MODEL_PATH):
+            raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
+
+        print("Loading CNN model...")
+        MODEL = load_model(MODEL_PATH)
+        print("CNN model loaded successfully.")
+
+    return MODEL
+
 
 def predict_damage(image_path: str):
-    if MODEL is None:
-        return {"class": "Error", "confidence": 0.0, "message": "Model not loaded."}
-        
-    try:
-        image = Image.open(image_path).convert("RGB")
-    except FileNotFoundError:
-        return {"class": "Error", "confidence": 0.0, "message": f"Image file not found at {image_path}"}
-    
+    model = get_model()
+
+    image = Image.open(image_path).convert("RGB")
     image = image.resize(IMAGE_SIZE)
-    
-    image_array = img_to_array(image) 
-    
-    image_array = np.expand_dims(image_array, axis=0) 
-    
+
+    image_array = img_to_array(image)
+    image_array = np.expand_dims(image_array, axis=0)
     processed_image = resnet_preprocess(image_array)
 
-    predictions = MODEL.predict(processed_image, verbose=0)
-    
-    probs = predictions[0]
+    predictions = model.predict(processed_image, verbose=0)
 
+    probs = predictions[0]
     pred_idx = np.argmax(probs)
     confidence = np.max(probs)
 
